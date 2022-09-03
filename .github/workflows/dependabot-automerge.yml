@@ -3,8 +3,6 @@ on: pull_request
 # pull_request_target dismisses contents: write?
 permissions:
   contents: write
-  pull-requests: write
-  # No need for pull-requests: write when pull_request_target?
 jobs:
   my-dependabot-job:
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
