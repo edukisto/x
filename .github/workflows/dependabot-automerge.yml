@@ -1,10 +1,9 @@
 name: Dependabot automerge
 on: pull_request
-# pull_request_target dismisses contents: write?
-permissions:
-  contents: write
 jobs:
   my-dependabot-job:
+    permissions:
+      contents: write
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     #if: ${{ github.actor == 'dependabot[bot]' }}
