@@ -1,5 +1,5 @@
 name: Dependabot automerge
-on: pull_request_target
+on: pull_request
 jobs:
   my-dependabot-job:
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
