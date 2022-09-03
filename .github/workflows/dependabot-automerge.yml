@@ -1,26 +1,27 @@
 name: Dependabot automerge
 on: pull_request_target
-# pull_request_target делает ненужным contents: write
+# pull_request_target dismisses contents: write?
 permissions:
   contents: write
   pull-requests: write
-  # pull-requests: write не нужен при pull_request_target
+  # No need for pull-requests: write when pull_request_target?
 jobs:
   my-dependabot-job:
-    if: ${{github.event.pull_request.user.login == 'dependabot[bot]'}}
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     #if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata
         id: my-dependabot-metadata
         uses: dependabot/fetch-metadata@v1.3.3
-        # Зачем with?
+        # Why with?
         #with:
           #github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Enable automerge for Dependabot pull requests
-        if: ${{contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y')}}
-        #if: ${{contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y') && steps.my-dependabot-metadata.outputs.update-type == 'version-update:semver-patch'}}
+        if: ${{ contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y') }}
+        #if: ${{ contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y') && steps.my-dependabot-metadata.outputs.update-type == 'version-update:semver-patch' }}
         run: gh pr merge --auto --merge $PR_URL
         env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          PR_URL: ${{github.event.pull_request.html_url}}
+          #GITHUB_TOKEN: ${{ secrets.MY_PUBLIC_REPO_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
