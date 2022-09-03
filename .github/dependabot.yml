@@ -4,5 +4,5 @@ updates:
     directory: /
     schedule:
       interval: daily
-      time: '22:58'
+      time: '23:09'
       timezone: Europe/Moscow
