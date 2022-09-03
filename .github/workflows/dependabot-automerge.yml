@@ -20,7 +20,7 @@ jobs:
       - name: Enable automerge for Dependabot pull requests
         if: ${{contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y')}}
         #if: ${{contains(steps.my-dependabot-metadata.outputs.dependency-names, 'y') && steps.my-dependabot-metadata.outputs.update-type == 'version-update:semver-patch'}}
-        run: gh pr merge --auto --merge '$PR_URL'
+        run: gh pr merge --auto --merge $PR_URL
         env:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           PR_URL: ${{github.event.pull_request.html_url}}
