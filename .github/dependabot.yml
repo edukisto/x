@@ -1,8 +1,8 @@
 version: 2
 updates:
-  package-ecosystem: gitsubmodule
-  directory: /
-  schedule:
-    interval: daily
-    time: '19:20'
-    timezone: Europe/Moscow
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: daily
+      time: '19:20'
+      timezone: Europe/Moscow
