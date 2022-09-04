@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: my-dependabot-metadata
-        uses: dependabot/fetch-metadata@v1.3.3
+        uses: dependabot/fetch-metadata@v1
       - name: Enable automerge for Dependabot pull requests
         if: >
           ${{
@@ -22,6 +22,32 @@ jobs:
         #if: ${{ ... && steps.my-dependabot-metadata.outputs.update-type == 'version-update:semver-patch' }}
         run: gh pr merge --auto --merge $PR_URL
         env:
-          #GITHUB_TOKEN: ${{ secrets.MY_PUBLIC_REPO_PAT }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          tar -cf - README.md \
+          | gzip -9 - > my-artifact.tar.gz
+      - name: Create release
+        id: my-create-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          asset_content_type: application/gzip
+          asset_name: my-artifact.tar.gz
+          asset_path: ./my-artifact.tar.gz
+          upload_url: ${{ steps.my-create-release.outputs.upload_url }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
